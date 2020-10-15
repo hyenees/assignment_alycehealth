@@ -8,7 +8,10 @@ ${reset};
     padding: 0px;
     box-sizing:border-box;
 }
-       
+body {
+  font-size: 16px;
+  line-height:1.5;
+}   
 ol,
 ul,
 li {
