@@ -4,11 +4,12 @@ import styled from "styled-components";
 interface PaginationProps {
   totalArticles: number;
   postsPerPage: number;
+  currentPage: number;
   paginate: (pageNum: number) => void;
 }
 
 const Pagination: React.FunctionComponent<PaginationProps> = (props) => {
-  const { totalArticles, postsPerPage, paginate } = props;
+  const { totalArticles, postsPerPage, currentPage, paginate } = props;
   const pageNumber = [];
 
   for (let i = 1; i <= Math.ceil(totalArticles / postsPerPage); i++) {
@@ -18,7 +19,11 @@ const Pagination: React.FunctionComponent<PaginationProps> = (props) => {
   return (
     <PaginationBox>
       {pageNumber.map((pageNum) => (
-        <li key={pageNum} onClick={() => paginate(pageNum)}>
+        <li
+          key={pageNum}
+          onClick={() => paginate(pageNum)}
+          className={pageNum === currentPage ? "selectedNum" : ""}
+        >
           {pageNum}
         </li>
       ))}
@@ -33,7 +38,17 @@ const PaginationBox = styled.ul`
   justify-content: center;
 
   li {
-    padding: 20px;
+    margin: 10px;
+    padding: 10px 18px;
+    border-radius: 50%;
     cursor: pointer;
+
+    &.selectedNum {
+      background: #ededed;
+    }
+
+    &:hover {
+      background: #ededed;
+    }
   }
 `;

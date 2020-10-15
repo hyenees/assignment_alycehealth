@@ -18,6 +18,10 @@ li {
   list-style: none;
 }
 
+input {
+  font-size: 14px;
+}
+
 input:focus,
 button:focus,
 select:focus,

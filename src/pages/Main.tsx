@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { RouteComponentProps } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,7 +8,7 @@ import { fetchArticleList } from "actions";
 import ArticleList from "components/ArticleList";
 import Pagination from "components/Pagination";
 
-const Main: React.FunctionComponent = () => {
+const Main: React.FunctionComponent<RouteComponentProps> = (props) => {
   const [word, setWord] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [postsPerPage] = useState<number>(4);
@@ -35,6 +36,10 @@ const Main: React.FunctionComponent = () => {
 
   return (
     <MainLayout>
+      <Nav>
+        <NavBtn>즐겨찾기</NavBtn>
+        <NavBtn onClick={() => props.history.push("/signin")}>로그인</NavBtn>
+      </Nav>
       <SearchBox>
         <SearchInput
           onChange={(e) => setWord(e.target.value)}
@@ -50,6 +55,7 @@ const Main: React.FunctionComponent = () => {
       <Pagination
         totalArticles={articles.length}
         postsPerPage={postsPerPage}
+        currentPage={currentPage}
         paginate={paginate}
       />
     </MainLayout>
@@ -60,14 +66,14 @@ export default Main;
 
 const MainLayout = styled.main`
   width: 60%;
-  margin: 0 auto 50px;
+  margin: 30px auto 50px;
 `;
 
 const SearchBox = styled.div`
   display: flex;
   align-items: center;
   width: 80%;
-  margin: 50px auto 0;
+  margin: 50px auto;
 `;
 
 const SearchInput = styled.input`
@@ -81,4 +87,23 @@ const SearchInput = styled.input`
 const SearchBtn = styled.button`
   width: 60px;
   height: 40px;
+  border-radius: 10px;
+`;
+
+const Nav = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 40px;
+`;
+
+const NavBtn = styled.button`
+  display: block;
+  padding-left: 24px;
+  background: none;
+  font-size: 20px;
+
+  &:hover {
+    color: #0032bc;
+    font-weight: 700;
+  }
 `;
