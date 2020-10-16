@@ -24,7 +24,7 @@ const EditArticle: React.FunctionComponent<RouteComponentProps> = (props) => {
           <h1>{article?.title}</h1>
           <InputBox>
             <TextArea
-              value={articleContent}
+              value={article?.content === null ? undefined : articleContent}
               onChange={(e) => setArticleContent(e.target.value)}
             />
           </InputBox>

@@ -52,10 +52,12 @@ const Main: React.FunctionComponent = () => {
         />
         <Btn onClick={searchArticles}>검색</Btn>
       </SearchBox>
-      <SortBtnBox>
-        <Btn onClick={() => dispatch(sortArticleList(0))}>날짜</Btn>
-        <Btn onClick={() => dispatch(sortArticleList(1))}>출처</Btn>
-      </SortBtnBox>
+      {articles.length > 0 && (
+        <SortBtnBox>
+          <Btn onClick={() => dispatch(sortArticleList(0))}>날짜</Btn>
+          <Btn onClick={() => dispatch(sortArticleList(1))}>출처</Btn>
+        </SortBtnBox>
+      )}
       <ArticleList articles={currentArticles} />
       <Pagination
         totalArticles={articles.length}

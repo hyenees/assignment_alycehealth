@@ -18,12 +18,13 @@ const ArticleReducer = (
     case FETCH_ARTICLE_LIST:
       let data: Article[] = action.payload;
       data = data.map((article) => {
-        if (article.publishedAt !== null && article.content !== null) {
+        if (article.publishedAt !== null) {
           const unusedWord = article.publishedAt.indexOf("Z");
           const revisedPublishedAt = article.publishedAt.slice(0, unusedWord);
-          const bracketIdx = article.content.indexOf("[");
-          
           article.publishedAt = revisedPublishedAt.replace("T", " ");
+        }
+        if (article.content !== null) {
+          const bracketIdx = article.content.indexOf("[");
           article.content = article.content.slice(0, bracketIdx);
         }
         return article;
