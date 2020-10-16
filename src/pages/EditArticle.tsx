@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "reducers";
 import { reviseArticle } from "actions";
+import Nav from "components/Nav";
 
 const EditArticle: React.FunctionComponent<RouteComponentProps> = (props) => {
   const [articleContent, setArticleContent] = useState<string | undefined>("");
@@ -16,33 +17,42 @@ const EditArticle: React.FunctionComponent<RouteComponentProps> = (props) => {
 
   return (
     <EditLayout>
-      <h1 className="title">기사 수정</h1>
-      <PostBox>
-        <h1>{article?.title}</h1>
-        <InputBox>
-          <TextArea
-            value={articleContent}
-            onChange={(e) => setArticleContent(e.target.value)}
-          />
-        </InputBox>
-      </PostBox>
-      <Button
-        onClick={() => {
-          dispatch(reviseArticle(articleContent));
-          props.history.push("/bookmark");
-        }}
-      >
-        저장하기
-      </Button>
+      <Nav />
+      <EditBox>
+        <h1 className="title">기사 수정</h1>
+        <PostBox>
+          <h1>{article?.title}</h1>
+          <InputBox>
+            <TextArea
+              value={articleContent}
+              onChange={(e) => setArticleContent(e.target.value)}
+            />
+          </InputBox>
+        </PostBox>
+        <Button
+          onClick={() => {
+            dispatch(reviseArticle(articleContent));
+            props.history.push("/bookmark");
+          }}
+        >
+          저장하기
+        </Button>
+      </EditBox>
     </EditLayout>
   );
 };
 
 export default EditArticle;
 
-const EditLayout = styled.section`
+const EditLayout = styled.div`
   width: 60%;
-  margin: 100px auto 50px;
+  margin: 30px auto 50px;
+`;
+
+const EditBox = styled.section`
+  width: 90%;
+  margin: 50px auto;
+
   .title {
     padding: 30px 0;
     font-size: 30px;
@@ -85,4 +95,9 @@ const Button = styled.button`
   border-radius: 40px;
   background: #1746c6;
   color: white;
+  font-weight: 500;
+
+  &:hover {
+    filter: brightness(95%);
+  }
 `;

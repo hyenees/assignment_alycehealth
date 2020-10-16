@@ -22,6 +22,7 @@ const ArticleReducer = (
           const unusedWord = article.publishedAt.indexOf("Z");
           const revisedPublishedAt = article.publishedAt.slice(0, unusedWord);
           const bracketIdx = article.content.indexOf("[");
+          
           article.publishedAt = revisedPublishedAt.replace("T", " ");
           article.content = article.content.slice(0, bracketIdx);
         }

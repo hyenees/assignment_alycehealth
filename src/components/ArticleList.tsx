@@ -131,5 +131,6 @@ export const TextButton = styled.button<BtnStyle>`
   `}
   &:hover {
     color: #ea5600;
+    font-weight: 500;
   }
 `;

@@ -21,11 +21,13 @@ const AccountReducer = (
         userId === action.payload.id &&
         userPassword === action.payload.password
       ) {
+        localStorage.setItem("user", action.payload.id);
         return { ...state, isLoggedIn: true };
       } else {
         return state;
       }
     case LOG_OUT:
+      localStorage.removeItem("user");
       return { ...state, isLoggedIn: false };
     default:
       return state;

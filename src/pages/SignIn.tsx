@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "reducers";
+import { useDispatch } from "react-redux";
 import { checkUserInfo } from "actions";
 import { User } from "store/types";
 import Nav from "components/Nav";
@@ -12,14 +11,11 @@ const SignIn: React.FunctionComponent<RouteComponentProps> = (props) => {
     id: "",
     password: "",
   });
-  const { isLoggedIn } = useSelector(
-    (state: RootState) => state.AccountReducer
-  );
   const dispatch = useDispatch();
 
-  const clickSignInBtn = () => {
+  const clickSignInBtn = async () => {
     dispatch(checkUserInfo(signInValue));
-    isLoggedIn
+    localStorage.getItem("user")
       ? props.history.push("/")
       : alert("아이디와 비밀번호를 확인해주세요.");
   };
@@ -36,13 +32,17 @@ const SignIn: React.FunctionComponent<RouteComponentProps> = (props) => {
               setSignInValue({ ...signInValue, id: e.target.value })
             }
           />
-
           <Input
             placeholder="비밀번호"
             type="password"
             onChange={(e) =>
               setSignInValue({ ...signInValue, password: e.target.value })
             }
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                clickSignInBtn();
+              }
+            }}
           />
           <Button onClick={clickSignInBtn}>로그인</Button>
         </AccountBox>
@@ -94,4 +94,8 @@ const Button = styled.button`
   background: #1746c6;
   color: #fff;
   font-weight: 500;
+
+  &:hover {
+    filter: brightness(95%);
+  }
 `;

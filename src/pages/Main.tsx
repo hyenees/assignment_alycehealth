@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { RouteComponentProps } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,12 +8,19 @@ import Nav from "components/Nav";
 import ArticleList from "components/ArticleList";
 import Pagination from "components/Pagination";
 
-const Main: React.FunctionComponent<RouteComponentProps> = (props) => {
+const Main: React.FunctionComponent = () => {
   const [word, setWord] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [postsPerPage] = useState<number>(4);
   const { articles } = useSelector((state: RootState) => state.ArticleReducer);
   const dispatch = useDispatch();
+
+  const indexOfLastArticle = currentPage * postsPerPage;
+  const indexOfFirstArticle = indexOfLastArticle - postsPerPage;
+  const currentArticles = articles.slice(
+    indexOfFirstArticle,
+    indexOfLastArticle
+  );
 
   const paginate = (pageNumber: number) => {
     setCurrentPage(pageNumber);
@@ -32,13 +38,6 @@ const Main: React.FunctionComponent<RouteComponentProps> = (props) => {
     }
   };
 
-  const indexOfLastArticle = currentPage * postsPerPage;
-  const indexOfFirstArticle = indexOfLastArticle - postsPerPage;
-  const currentArticles = articles.slice(
-    indexOfFirstArticle,
-    indexOfLastArticle
-  );
-
   return (
     <MainLayout>
       <Nav />
@@ -51,11 +50,11 @@ const Main: React.FunctionComponent<RouteComponentProps> = (props) => {
             }
           }}
         />
-        <SearchBtn onClick={searchArticles}>검색</SearchBtn>
+        <Btn onClick={searchArticles}>검색</Btn>
       </SearchBox>
       <SortBtnBox>
-        <SortBtn onClick={() => dispatch(sortArticleList(0))}>날짜</SortBtn>
-        <SortBtn onClick={() => dispatch(sortArticleList(1))}>출처</SortBtn>
+        <Btn onClick={() => dispatch(sortArticleList(0))}>날짜</Btn>
+        <Btn onClick={() => dispatch(sortArticleList(1))}>출처</Btn>
       </SortBtnBox>
       <ArticleList articles={currentArticles} />
       <Pagination
@@ -90,19 +89,17 @@ const SearchInput = styled.input`
   font-size: 20px;
 `;
 
-const SearchBtn = styled.button`
-  width: 60px;
-  height: 40px;
-  border-radius: 10px;
-`;
-
-const SortBtnBox = styled.div`
-  margin-left: 30px;
-`;
-
-const SortBtn = styled.button`
+const Btn = styled.button`
   width: 60px;
   height: 40px;
   margin: 10px;
   border-radius: 10px;
+
+  &:hover {
+    filter: brightness(95%);
+  }
+`;
+
+const SortBtnBox = styled.div`
+  margin-left: 30px;
 `;
