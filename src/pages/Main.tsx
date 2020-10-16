@@ -4,7 +4,8 @@ import styled from "styled-components";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "reducers";
-import { fetchArticleList } from "actions";
+import { fetchArticleList, sortArticleList } from "actions";
+import Nav from "components/Nav";
 import ArticleList from "components/ArticleList";
 import Pagination from "components/Pagination";
 
@@ -21,10 +22,14 @@ const Main: React.FunctionComponent<RouteComponentProps> = (props) => {
   };
 
   const searchArticles = async () => {
-    const res = await axios.get(
-      `https://newsapi.org/v2/everything?apiKey=f0314630b1d64516bc522a83c6c5b6c0&q=${word}`
-    );
-    dispatch(fetchArticleList(res.data.articles));
+    try {
+      const res = await axios.get(
+        `https://newsapi.org/v2/everything?apiKey=f0314630b1d64516bc522a83c6c5b6c0&q=${word}`
+      );
+      dispatch(fetchArticleList(res.data.articles));
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const indexOfLastArticle = currentPage * postsPerPage;
@@ -36,10 +41,7 @@ const Main: React.FunctionComponent<RouteComponentProps> = (props) => {
 
   return (
     <MainLayout>
-      <Nav>
-        <NavBtn>즐겨찾기</NavBtn>
-        <NavBtn onClick={() => props.history.push("/signin")}>로그인</NavBtn>
-      </Nav>
+      <Nav />
       <SearchBox>
         <SearchInput
           onChange={(e) => setWord(e.target.value)}
@@ -51,6 +53,10 @@ const Main: React.FunctionComponent<RouteComponentProps> = (props) => {
         />
         <SearchBtn onClick={searchArticles}>검색</SearchBtn>
       </SearchBox>
+      <SortBtnBox>
+        <SortBtn onClick={() => dispatch(sortArticleList(0))}>날짜</SortBtn>
+        <SortBtn onClick={() => dispatch(sortArticleList(1))}>출처</SortBtn>
+      </SortBtnBox>
       <ArticleList articles={currentArticles} />
       <Pagination
         totalArticles={articles.length}
@@ -90,20 +96,13 @@ const SearchBtn = styled.button`
   border-radius: 10px;
 `;
 
-const Nav = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  padding: 0 40px;
+const SortBtnBox = styled.div`
+  margin-left: 30px;
 `;
 
-const NavBtn = styled.button`
-  display: block;
-  padding-left: 24px;
-  background: none;
-  font-size: 20px;
-
-  &:hover {
-    color: #0032bc;
-    font-weight: 700;
-  }
+const SortBtn = styled.button`
+  width: 60px;
+  height: 40px;
+  margin: 10px;
+  border-radius: 10px;
 `;

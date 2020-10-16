@@ -3,6 +3,7 @@ import {
   FETCH_ARTICLE_LIST,
   ArticleState,
   SORT_ARTICLE_LIST,
+  Article,
 } from "../store/types";
 
 const initialState: ArticleState = {
@@ -15,7 +16,18 @@ const ArticleReducer = (
 ): ArticleState => {
   switch (action.type) {
     case FETCH_ARTICLE_LIST:
-      return { ...state, articles: action.payload };
+      let data: Article[] = action.payload;
+      data = data.map((article) => {
+        if (article.publishedAt !== null && article.content !== null) {
+          const unusedWord = article.publishedAt.indexOf("Z");
+          const revisedPublishedAt = article.publishedAt.slice(0, unusedWord);
+          const bracketIdx = article.content.indexOf("[");
+          article.publishedAt = revisedPublishedAt.replace("T", " ");
+          article.content = article.content.slice(0, bracketIdx);
+        }
+        return article;
+      });
+      return { ...state, articles: data };
     case SORT_ARTICLE_LIST:
       switch (action.payload) {
         case 0:
